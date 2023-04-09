@@ -4,4 +4,7 @@
     &lt;TestId&gt;MSTest::08892F12-3236-42F4-AC76-C8C05699E95A::net6.0::GameArsenalTest.Serializations.SerializationTest&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a81f04e4_002D8e51_002D49b8_002Db4a4_002Dbb9869b34212/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from InventoryAddTest.cs" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;ProjectFile&gt;08892F12-3236-42F4-AC76-C8C05699E95A/d:Inventories/f:InventoryTest.cs&lt;/ProjectFile&gt;
+&lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Unoccupy/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

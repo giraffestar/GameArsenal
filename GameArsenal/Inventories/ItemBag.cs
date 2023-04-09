@@ -22,12 +22,12 @@ namespace GameArsenal.Inventories
         FailByInvalidSlotIndex,
         FailByAlreadyEmpty,
     }
-    
+
     public class ItemBag<TKey> : IReadOnlyList<ItemSlot<TKey>> where TKey : struct
     {
         public int Count => this.slots.Count;
         public ItemSlot<TKey> this[int index] => this.slots[index];
-        
+
         private readonly List<ItemSlot<TKey>> slots;
 
         public ItemBag(int bagSize)
@@ -92,7 +92,7 @@ namespace GameArsenal.Inventories
                 return ItemBagOccupySlotResult.FailByInvalidSlotIndex;
             }
 
-            if (this.slots[index].Equals(ItemSlot<TKey>.Empty))
+            if (!this.slots[index].Equals(ItemSlot<TKey>.Empty))
             {
                 return ItemBagOccupySlotResult.FailByAlreadyOccupied;
             }
@@ -105,7 +105,7 @@ namespace GameArsenal.Inventories
         public ItemBagUnoccupySlotResult UnoccupySlot(int index, out ItemSlot<TKey> slot)
         {
             slot = null;
-            
+
             if (index < 0 || index >= this.slots.Count)
             {
                 return ItemBagUnoccupySlotResult.FailByInvalidSlotIndex;

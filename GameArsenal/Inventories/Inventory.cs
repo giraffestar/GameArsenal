@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace GameArsenal.Inventories
@@ -6,7 +5,7 @@ namespace GameArsenal.Inventories
     public class Inventory<TKey> : IBagController<TKey> where TKey : struct
     {
         public int BagCount => this.bags.Count;
-        
+
         private readonly Dictionary<TKey, ItemToken<TKey>> tokens;
         private readonly List<ItemBag<TKey>> bags;
         private readonly IInventoryRule<TKey> rule;
@@ -23,30 +22,46 @@ namespace GameArsenal.Inventories
             var itemBag = new ItemBag<TKey>(bagSize);
             this.bags.Add(itemBag);
         }
-        
+
+        public int GetStaticItemAmount(TKey itemId)
+        {
+            return !this.tokens.TryGetValue(itemId, out var token) ? 0 : token.GetTotalAmount();
+        }
+
         // RemoveItemBag
-        
+
         public bool AddStaticItem(TKey itemId, int amount)
         {
             if (!this.tokens.TryGetValue(itemId, out var token))
             {
                 token = new ItemToken<TKey>(this, this.rule, itemId);
-                this.tokens.Add(itemId, token);
             }
 
-            return token.AddStaticItem(amount);
+            if (token.AddStaticItem(amount))
+            {
+                if (!this.tokens.ContainsKey(itemId))
+                {
+                    this.tokens.Add(itemId, token);
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         // public bool AddStaticItem(TKey itemId, int amount, int bagIndex, int slotIndex)
         // {
         //     
         // }
-        
+
         public bool RemoveStaticItem(TKey itemId, int amount)
         {
             return this.tokens.TryGetValue(itemId, out var token) && token.RemoveStaticItem(amount);
         }
-        
+
         // public void RemoveStaticItem(TKey itemId, int amount, int bagIndex, int slotIndex)
         // {
         //     
@@ -57,10 +72,21 @@ namespace GameArsenal.Inventories
             if (!this.tokens.TryGetValue(itemId, out var token))
             {
                 token = new ItemToken<TKey>(this, this.rule, itemId);
-                this.tokens.Add(itemId, token);
             }
 
-            return token.AddDynamicItem(dynamicItemId);
+            if (token.AddDynamicItem(dynamicItemId))
+            {
+                if (!this.tokens.ContainsKey(itemId))
+                {
+                    this.tokens.Add(itemId, token);
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public bool RemoveDynamicItem(TKey itemId, DynamicItemId dynamicItemId)
@@ -72,8 +98,8 @@ namespace GameArsenal.Inventories
         // {
         //     
         // }
-        
-        public (int bagIndex, int slotIndex) GetNextEmptySlot()
+
+        (int bagIndex, int slotIndex) IBagController<TKey>.GetNextEmptySlot()
         {
             for (int i = 0; i < this.bags.Count; i++)
             {
@@ -101,14 +127,14 @@ namespace GameArsenal.Inventories
             return sum;
         }
 
-        public bool AddToBag(int bagIndex, int slotIndex, ItemSlot<TKey> itemSlot)
+        bool IBagController<TKey>.AddToBag(int bagIndex, int slotIndex, ItemSlot<TKey> itemSlot)
         {
             var result = this.bags[bagIndex].OccupySlot(itemSlot, slotIndex);
 
             return result == ItemBagOccupySlotResult.Success;
         }
 
-        public bool RemoveFromBag(ItemSlot<TKey> itemSlot)
+        bool IBagController<TKey>.RemoveFromBag(ItemSlot<TKey> itemSlot)
         {
             var matchFound = false;
             foreach (var bag in this.bags)

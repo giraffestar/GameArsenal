@@ -21,4 +21,8 @@
       <ProjectReference Include="..\GameArsenal\GameArsenal.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Inventories" />
+    </ItemGroup>
+
 </Project>

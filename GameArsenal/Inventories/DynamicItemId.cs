@@ -17,7 +17,7 @@ namespace GameArsenal.Inventories
         }
     }
 
-    public readonly struct DynamicItemId : IEquatable<DynamicItemId>
+    public struct DynamicItemId : IEquatable<DynamicItemId>
     {
         public static readonly DynamicItemId Invalid = new DynamicItemId(0);
 
